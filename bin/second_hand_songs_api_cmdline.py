@@ -26,15 +26,12 @@ def main(args=sys.argv[1:]):
         <dereferece_attr>...       Access a field/key, works across multiple fields
     """
     d_args_dict = docopt(usage_string, argv=args, version=s.__version__)
-
     schema = voluptuous.Schema({}, extra=True)
     try:
         d_args_dict = schema(d_args_dict)
     except voluptuous.SchemaError as e:
         exit(e)
 
-    print(d_args_dict, file=sys.stderr)
-    raise Exception()
     performer = d_args_dict["--performer"]
     date = d_args_dict["--date"]
     page = d_args_dict["--page"]
@@ -65,9 +62,9 @@ def main(args=sys.argv[1:]):
         raise Exception("Need to pick a way to search for data.")
 
 
-    if d_args_dict["-d"]:
+    if d_args_dict["<dereferece_attr>"]:
         new_object = o
-        for attr_deref in d_args_dict["-d"]:
+        for attr_deref in d_args_dict["<dereferece_attr>"]:
             new_object = getattr(new_object, attr_deref)
         print(new_object)
     else:

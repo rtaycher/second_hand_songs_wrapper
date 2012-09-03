@@ -1,5 +1,4 @@
 from __future__ import print_function
-import sys
 import urllib2
 import contextlib
 import datetime
@@ -9,14 +8,7 @@ import json
 from types import NoneType
 from urllib import urlencode
 import re
-import os.path
-__author__ = "Roman A. Taycher"
-__copyright__ = "Copyright 2012, Roman A. Taycher"
-__credits__ = ["Roman A. Taycher"]
-__license__ = "MIT"
-__version__ = open(os.path.join(os.path.dirname(__file__), "VERSION")).read()
-__maintainer__ = "Roman A. Taycher"
-__email__ = "rtaycher1987@gmail.com"
+
 
 def _valid_url(url):
     u = re.compile('^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?')
@@ -60,14 +52,14 @@ def _shs_url(url):
     if "secondhandsongs.com" in url:
         return True
     else:
-        raise ValueError("Not a valid shs url.") 
+        raise ValueError("Not a valid shs url.")
 
 def is_shs_url(url):
     if "secondhandsongs.com" in url:
         return True
     else:
         return False
-    
+
 
 class SHSResourceUsedUp(Exception):
     pass
@@ -76,7 +68,7 @@ class InvalidSHSJsonData(Exception):
     pass
 
 
-base_url = "http: // www.secondhandsongs.com / "
+base_url = "http://www.secondhandsongs.com/"
 
 
 class SHSDataAcess(object):
@@ -85,12 +77,12 @@ class SHSDataAcess(object):
     hour_shs_requests = minute_shs_requests = 0
     max_hour_shs_requests = 1000
     max_minute_shs_requests = 50
-    
+
     @classmethod
     def getShsResource(cls, uri):
         x = cls.getSHSData(uri)
         return entityTypeToClass[x["entityType"]](x)
-    
+
     @classmethod
     def getSHSData(cls, url):
         if cls.cache and url in cls.cache:
@@ -172,7 +164,7 @@ class ShsDataWithResourceFetch(ShsData):
     def get_from_resource_id(cls, resource_id):
         if cls == ShsDataWithResourceFetch.__class__:
             raise NotImplementedError("not implemented for base shs object")
-        print("resource url is:" + cls.base_resource_url + str(resource_id), file=sys.stderr)
+#        print("resource url is:" + cls.base_resource_url + str(resource_id), file=sys.stderr)
         return cls(SHSDataAcess.getSHSData(cls.base_resource_url + str(resource_id)))
 
 

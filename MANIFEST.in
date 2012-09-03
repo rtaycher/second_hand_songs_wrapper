@@ -1,1 +1,1 @@
-recursive-include VERSION
+include second_hand_songs_wrapper/VERSION

@@ -1,5 +1,6 @@
 import second_hand_songs_wrapper as s
-from nose.tools import assert_equal, assert_raises
+from nose.tools import assert_equal, assert_raises#@UnresolvedImport
+
 from voluptuous import InvalidList
 
 def testShsArtist():

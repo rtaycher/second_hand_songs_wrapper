@@ -254,6 +254,7 @@ class ShsArtist(ShsDataWithResourceFetch):
 
         self._initialize_fields_from_json_data({required("entityType"): voluptuous.any(u"artist"
                                                                                        , u"joint-artist"),
+                                                required("uri"):basestring,
                                                 "commonName": unicode,
                                                "picture": coerce(ShsPicture),
                                                "birthDate": isPartialDate,
@@ -298,6 +299,7 @@ class ShsPerformance(ShsDataWithResourceFetch):
         self.external_uri = None #	 	youtube videos
         self._initialize_fields_from_json_data({required("entityType"): voluptuous.any(u"performance",
                                                                                         u"recording"),
+                                                required("uri"):basestring,
                                                 "title": unicode,
                                                "performer": coerce(ShsPerformer),
                                                "date": isPartialDate,
@@ -328,6 +330,7 @@ class ShsWork(ShsDataWithResourceFetch):
                                                                                         u"poem",
                                                                                         u"film",
                                                                                         u"proza"),
+                                        required("uri"):basestring,
                                         "title": unicode,
                                        "language": _voluptuous_any_or_null(unicode),
                                        "credits": [coerce(ShsArtist)],
@@ -359,6 +362,7 @@ class ShsRelease(ShsDataWithResourceFetch):
                                                                                         u"audio single",
                                                                                         u"internet",
                                                                                         u"video"),
+                                                required("uri"):basestring,
                                                 "title": unicode,
                                                "type": unicode,
                                                "date": isPartialDate,
@@ -378,7 +382,7 @@ class ShsLabel(ShsDataWithResourceFetch):
     def __init__(self, json_data):
         self.name = None	#string	Name of the label
         self._initialize_fields_from_json_data({required("entityType"): "label",
-                                                required("uri") : unicode,
+                                                required("uri") : basestring,
                                                 required("name"): unicode,
                                                 "picture" : _voluptuous_any_or_null(coerce(ShsPicture))
                                                 },
@@ -410,11 +414,11 @@ def second_hand_search(title, type_=work, performer=None,
     required_if_work = voluptuous.required if type_ == work else noop
 
 
-    voluptuous.Schema({required("title"): str,
-                       required("type_"): _voluptuous_any_or_null(performance, work),
-                       required_if_performance("performer"): _voluptuous_any_or_null(str),
-                       required_if_performance("date"): _voluptuous_any_or_null(str),
-                       required_if_work("credits"): _voluptuous_any_or_null(str),
+    voluptuous.Schema({"title": basestring,
+                       "type_": _voluptuous_any_or_null(performance, work),
+                       "performer": _voluptuous_any_or_null(basestring) if type_ == performance else None,
+                       "date": _voluptuous_any_or_null(basestring) if type_ == performance else None,
+                       "credits": _voluptuous_any_or_null(basestring) if type_ == work else None,
                       "page": _voluptuous_any_or_null(int),
                       "pageSize": _voluptuous_any_or_null(int)})(args)
     if page:

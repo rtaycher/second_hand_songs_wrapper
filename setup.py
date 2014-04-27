@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 __version__ = open(os.path.join(os.path.dirname(__file__),
-                                "second_hand_songs_wrapper/VERSION")).read()
+                                "second_hand_songs_wrapper/VERSION")).read().strip()
 
 setup(name='second_hand_songs_wrapper',
       version=__version__,
